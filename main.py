@@ -52,6 +52,9 @@ def register():
         return redirect(url_for('login'))
     return render_template("register.html")
 
+@app.route('/admin')
+def admin():
+    return render_template("admin.html")
 
 if __name__ =="__main__":
     app.run(debug=True)
