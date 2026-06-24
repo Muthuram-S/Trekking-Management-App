@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0"> 
+    <title>
+        Participants
+    </title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    </head>
+    <body>
+        <div>
+            <i class="bi bi-people-fill"></i><h5>Participants:{{trek.name}}</h5>
+        </div>
+        <table class="table-light">
+            <thead><tr><th>Booking ID</th><th>Name</th><th>Email</th><th>Booking Date</th><th>Status</th></tr></thead>
+            <tbody>
+                {%  for i in bookings %}
+                <tr></tr>
+                <td>
+                    {{i.id}}
+                </td>
+                <td>
+                    {{i.name}}
+                </td>
+                <td>
+                    {{i.email}}
+                </td>
+                <td>
+                    {{i.bookings}}
+                </td>
+                <td>
+                    {{i.status}}
+                </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </body>
+</html>
