@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <meta viewport="1.0" content="width=device-width,initial-scale=1.0">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
         <title>
             User Dashboard
         </title>
@@ -66,7 +66,8 @@
         {% endfor  %}
       </tbody>
         </table>
-        <div class="card w-50">
+    </div>
+    <div class="card w-50">
         <div class="card-body">
             <h5 class="card-title">
                 {%for t in trek %}
@@ -77,11 +78,12 @@
 
         
         <span class="badge badge-{{ t.status.lower() }} mb-3">{{ t.status }}</span>
-        
+        <div class="btn-success">Book now</div>
         
             </div>
         </div>
-    </div>
-    </div>
-    </div>
+        
+    </body>
+    </html>
+    
     

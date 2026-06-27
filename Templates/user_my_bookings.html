@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html >
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Bookings</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+<body>
+    <h1>My Bookings & Trekking History</h1>
+    <div class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with button groups">
+  <div class="btn-group me-2" role="group" aria-label="First group">
+    <button type="button" class="btn btn-outline-secondary">1</button>
+    <button type="button" class="btn btn-outline-secondary">2</button>
+    <button type="button" class="btn btn-outline-secondary">3</button>
+    <button type="button" class="btn btn-outline-secondary">4</button>
+  </div>
+    </div>
+    <table class="table table-hover mb-0">
+      <thead><tr><th>ID</th><th>Name</th><th>Location</th><th>Difficulty</th><th>Slots</th><th>Status</th></tr></thead>
+      <tbody>
+        {% for t in recent_treks %}
+        <tr>
+            <td>#{{ t.id }}</td>
+            <td>{{t.name}}</td>
+            <td>{{t.location}}</td>
+            <td>{{t.diffculty}}</td>
+            <td>{{t.status}}</td>
+        
+        </tr>
+        {% endfor  %}
+      </tbody>
+        </table>
+</body>
+</html>

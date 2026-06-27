@@ -55,6 +55,9 @@ def register():
 @app.route('/admin')
 def admin():
     return render_template("admin.html")
+@app.route("/add_trek")
+def add_trek():
+    return render_template("add_trek.html")
 
 if __name__ =="__main__":
     app.run(debug=True)
