@@ -18,14 +18,16 @@ class Trek(db.Model):
     Location=db.Column(db.String(100),nullable=False)
     Duration=db.Column(db.Integer,nullable=False)
     Difficulty=db.Column(db.String(100),nullable=False)
-    Available_Staff=db.Column(db.Integer,nullable=False)
-    Staff_Id=db.Column(db.Integer,db.ForeignKey('user.Id'),nullable=False)
+    Price=db.Column(db.Integer,nullable=False)
+    Total_Slots=db.Column(db.Integer,nullable=False)
+    Staff_Id=db.Column(db.Integer,db.ForeignKey('user.Id'),nullable=True)
     Status=db.Column(db.String(100),nullable=False)
-    Start_Date=db.Column(db.DateTime,nullable=False)
-    End_Date=db.Column(db.DateTime,nullable=False)
+    Start_Date=db.Column(db.Date,nullable=False)
+    End_Date=db.Column(db.Date,nullable=False)
     Description=db.Column(db.Text,nullable=False)
     bookings=db.relationship('Book',backref='trek')
-
+    Available_Staff=db.Column(db.Integer,nullable=False)
+    staff = db.relationship('User', foreign_keys=[Staff_Id])
 
 class Book(db.Model):
     booking_id=db.Column(db.Integer,primary_key=True)

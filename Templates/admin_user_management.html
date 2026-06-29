@@ -32,18 +32,24 @@
             <th>ID</th>
             <th>Name</th>
             <th>Email</th>
-            <th>Contact</th>
             <th>Bookings</th>
             <th>Status</th>
-            <th>Action</th>
+           ]
         </thead>
         <tbody>
-            {%for t in trek%}
-            <td>#{{t.id}}</td>
-            <td>{{t.email}}</td>
-            <td>{{t.assigned_treks}}</td>
-            <td>{{t.status}}</td>
-            <td>{{t.actions}}</td>
+          
+                {%for i in user%}
+                    <td>#{{i.Id}}</td>
+                    <td>{{i.Username}}</td>
+                    <td>{{i.Email}}</td>
+                    <td>{{booking_count}}</td>
+                    <td>{% if i.Status=="Approved"%}
+                        <a href="#" class="btn btn-danger btn-sm">Blacklist</a>
+                        {%else%}
+                        <a href="#" class="btn btn-success btn-sm">Approve</a>
+                        {%endif%}
+                    </td>
+                   
             {%endfor%}
         </tbody>
         </table>

@@ -40,11 +40,21 @@
     <!-- <h1 class="display-1  ">Explore Treks</h1>
     <br></br> -->
     
-    <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-50"></div>
-    <h1 class="display-1 text-center">Find Your Next Adventure</h1>
+    <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-50"    style="pointer-events: none;"></div>
+    <h1 class="text-center">Find Your Next Adventure</h1>
     
-    <div class="row justify-content-center mt-5">
-        <div class="col-md-4" style="font-size: large;">
+    <div class="row justify-content-center mt-2">
+        <div class="col-md-5" style="font-size: large;">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show mb-2" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
     {%block content%}
 {% endblock %}
         </div>

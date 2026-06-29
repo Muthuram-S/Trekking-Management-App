@@ -37,13 +37,34 @@
             <th>Action</th>
         </thead>
         <tbody>
-            {%for t in trek%}
-            <td>#{{t.id}}</td>
-            <td>{{t.email}}</td>
-            <td>{{t.assigned_treks}}</td>
-            <td>{{t.status}}</td>
-            <td>{{t.actions}}</td>
-            {%endfor%}
+            {%for s in staff_dt%}
+            <tr>
+            <td>#{{s.staff.Id}}</td>
+            <td>#{{s.staff.Username}}</td>
+            <td>{{s.staff.Email}}</td>
+            <td>{% if s.trek%}
+                    {{s.trek.Trek_Name}}
+                {%else%}
+                    Unassigned
+                {% endif %}
+            </td>
+            <td>{%if (s.staff.Status) == "Approved"%}
+                    <button class="btn btn-success">Active</button>
+                {%elif s.staff.Status=="Pending" %}
+                    <button class="btn btn-warning">Pending</button>
+                {%else%}
+                    <button class="btn btn-danger">Blacklisted</button>
+                {%endif%}
+            </td>
+            <td>{%if (s.staff.Status) == "Approved"%}
+                    <a href="{{url_for('blacklist',staff_id=s.staff.Id)}}" class="btn btn-den">Blacklist</a>
+                {%else%}
+                    <a href="{{url_for('blacklist',staff_id=s.staff.Id)}}" class="btn btn-success">Approve</a>
+           
+            {%endif%}
+            </td>
+             </tr>
+                    {%endfor%}
         </tbody>
         </table>
     </div>

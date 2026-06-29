@@ -1,0 +1,18 @@
+from flask import Flask,render_template,config,request,redirect,url_for,flash,session
+from models import db,User,Trek
+from werkzeug.security import generate_password_hash,check_password_hash
+
+app=Flask(__name__)
+
+app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///trekking.db'
+app.config['SECRET_KEY']='mysecretkey'
+db.init_app(app)
+
+from routes import *
+
+
+with app.app_context():
+    db.create_all()
+
+if __name__ =="__main__":
+    app.run(debug=True)
