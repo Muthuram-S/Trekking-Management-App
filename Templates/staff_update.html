@@ -15,19 +15,19 @@
             </div>
             <div class="card-body">
                 <h5 class="card-title">Available Slots</h5>
-                <input class="form-control" type="number" placeholder="Default input" aria-label="default input example">
+                <input class="form-control" type="number" name="available_slots"  placeholder="Default input" aria-label="default input example" value="{{t.Total_Slots}}">
                 <h5 class="card-title">Trek Status</h5>
                 <div class="input-group mb-3">
-        <input type="text" class="form-control" aria-label="Text input with dropdown button">
-        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Dropdown</button>
+        <input type="text" class="form-control" name="status" aria-label="Text input with dropdown button">
+        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" value="{{t.Diffculty}}">Dropdown</button>
         <ul class="dropdown-menu dropdown-menu-end">
-            <li><a class="dropdown-item" href="#">Easy</a></li>
-            <li><a class="dropdown-item" href="#">Moderate</a></li>
-            <li><a class="dropdown-item" href="#">Hard</a></li>
+            <li><a class="dropdown-item" href="#">Open</a></li>
+            <li><a class="dropdown-item" href="#">Closed</a></li>
+            <li><a class="dropdown-item" href="#">Completed</a></li>
         </ul>
         </div>
-        <button>Save Changes</button>
-        <button>Cancel</button>
+        <a href="#" class="btn btn-success"><i class="bi bi-box-arrow-down"></i>Save Changes</a>
+        <a href="#" class="btn btn-secondary">Changes</a>
             </div>
     </body>
 </html>

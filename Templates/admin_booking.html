@@ -24,45 +24,29 @@
         <div class=" row justify-content-center">
         <div class="col-14">
         
-        
+       
         <div class="card mt-3" style="border-color: white;">
         <div class="container">
 
         <div class="row justify-content-center">
-            <h4 class="mt-4 "><i class="bi bi-map"></i> Treks</h4>
+            <h4 class="mt-4 "><i class="bi bi-backpack3"></i> Bookings</h4>
         <div class="col-14">
             
         <table class="table table-hover mb-0 ">
             
-      <thead class="table-dark"><tr><th>ID</th><th>Name</th><th>Location</th><th>Difficulty</th><th>Duration</th><th>Slots</th><th>Staff</th><th>Status</th><th>Actions</th></tr></thead>
+      <thead class="table-dark"><tr><th>ID</th><th>User</th><th>Trek</th><th>Date</th><th>Status</th></tr></thead>
       <tbody>
-        {% for t in trek %}
+        {% for t in book %}
         <tr>
+            <td>{{t.booking_id}}</td>
+            <td>{{ t.User_Id}}</td>
+            
             <td>{{t.Trek_Id}}</td>
-            <td>{{ t.Trek_Name }}</td>
             
-            <td>{{t.Location}}</td>
+            <td>{{t.Booking_Date}}</td>
             
-            <td>{{t.Difficulty}}</td>
-            <td>{{t.Duration}}</td>
-            <td>{{t.Total_Slots}}</td>
-            <td>{% if t.staff%}
-                    {{t.staff.Username}}
-                {%else%}
-                    Unassigned
-                {%endif%}
-            </td>
             <td>{{t.Status}}</td>
-            <td>
-                <div class="d-flex">
-                    <a href="{{url_for('add_trek',trek_id=t.Trek_Id)}}" class="btn btn-outline-secondary me-2"><i class="bi bi-pencil-square"></i></a>
-                    <form action="{{ url_for('delete', trek_id=t.Trek_Id) }}" method="POST" style="display:inline;">
-    <button type="submit" class="btn btn-outline-secondary" onclick="return confirm('Delete this trek?');">
-        <i class="bi bi-trash"></i>
-    </button>
-</form>
-                </div>
-            </td>
+          
         </tr>
         {% endfor  %}
       </tbody>

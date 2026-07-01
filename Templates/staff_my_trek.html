@@ -29,8 +29,8 @@
         <span class="badge badge-{{ t.status.lower() }} mb-3">{{ t.difficulty }}</span>
         <span class="badge badge-{{ t.status.lower() }} mb-3">{{ t.status }}</span>
         <div class="d-flex gap-2">
-          <a href="{{ url_for('staff.update_trek', id=t.id) }}" class="btn btn-primary btn-sm"><i class="bi bi-pencil me-1"></i>Update</a>
-          <a href="{{ url_for('staff.participants', id=t.id) }}" class="btn btn-outline-secondary btn-sm"><i class="bi bi-people me-1"></i>Participants</a>
+          <a href="{{ url_for('staff_update', id=t.id) }}" class="btn btn-primary btn-sm"><i class="bi bi-pencil me-1"></i>Update</a>
+          <a href="{{ url_for('staff_participants', id=t.id) }}" class="btn btn-outline-secondary btn-sm"><i class="bi bi-people me-1"></i>Participants</a>
         </div>
         
             </div>

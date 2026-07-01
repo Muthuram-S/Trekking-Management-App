@@ -4,8 +4,6 @@ from flask import render_template,request,session,url_for,redirect,flash
 from werkzeug.security import check_password_hash,generate_password_hash
 from models import db,User,Trek,Book
 
-print("Routes imported")
-print("routes app id:", id(app))
 
 @app.route("/login",methods=['GET','POST'])
 def login():
@@ -92,8 +90,12 @@ def register():
 
 @app.route('/admin')
 def admin():
-    return render_template("admin.html")
-@app.route('/admin/edit_trek/<int:trek_id>')
+    user=User.query.filter_by(Role="User").count()
+    staff=User.query.filter_by(Role="Staff").count()
+    bookings=Book.query.count()
+    trek=Trek.query.count()
+    return render_template("admin.html",count_user=user,count_staff=staff,trek=trek,total_bookings=bookings)
+@app.route('/admin/edit_trek/<int:trek_id>',methods=['GET','POST'])
 @app.route("/add_trek/",methods=['GET','POST'])
 
 def add_trek(trek_id=None):
@@ -111,19 +113,33 @@ def add_trek(trek_id=None):
         Total_Slots=int(request.form.get('total_slots'))
         Price=int(request.form.get('price'))
         Staff_Id=request.form.get("staff_id") or None
+        status = request.form.get("status")
         Available_Staff=Total_Slots
         Description=request.form.get('description')
         Start_Date = start_date
         End_Date = end_date
         Duration=duration
-        new_trek=Trek(Trek_Name=Trek_Name,Location=Location,
-        Difficulty=Difficulty,Total_Slots=Total_Slots,
-        Price=Price,Start_Date=Start_Date,Description=Description,Staff_Id = Staff_Id,Available_Staff=Available_Staff,
-        End_Date=End_Date,Status="Pending")
-        db.session.add(new_trek)
+        if trek:
+            trek.Trek_Name = Trek_Name
+            trek.Location = Location
+            trek.Difficulty = Difficulty
+            trek.Total_Slots = Total_Slots
+            trek.Price = Price
+            trek.Staff_Id = Staff_Id
+            trek.Description = Description
+            trek.Start_Date = Start_Date
+            trek.End_Date = End_Date
+            trek.Duration = Duration
+            trek.Status = status
+        else:
+            new_trek=Trek(Trek_Name=Trek_Name,Location=Location,
+            Difficulty=Difficulty,Total_Slots=Total_Slots,
+            Price=Price,Start_Date=Start_Date,Description=Description,Staff_Id = Staff_Id,Available_Staff=Available_Staff,
+            End_Date=End_Date,Status="Pending")
+            db.session.add(new_trek)
         db.session.commit()
         flash('Trek added successfully!', 'success')
-        return redirect(url_for('admin/trek'))
+        return redirect(url_for('trek'))
     return render_template('add_Trek.html',staffs=staffs,trek=trek)
 
 # @app.route('/admin/edit_trek/<int:trek_id>')
@@ -192,3 +208,40 @@ def trek():
     trek=Trek.query.order_by(Trek.Trek_Id.desc()).all()
     
     return render_template("admin_trek.html",trek=trek)
+
+@app.route("/admin/bookings")
+def bookings():
+    book=Book.query.all()
+    return render_template("admin_booking.html",book=book)
+
+@app.route("/admin/delete/<int:trek_id>", methods=["POST"])
+def delete(trek_id):
+    delete_trek = Trek.query.get_or_404(trek_id)
+    db.session.delete(delete_trek)
+    db.session.commit()
+    
+    return redirect(url_for("trek"))
+
+
+@app.route("/staff/dashboard")
+def staff_dashboard():
+    staff_id=session["user_id"]
+    trek=Trek.query.filter_by(Staff_Id=staff_id).all()
+    return redirect(url_for("staff_dashboard",trek=trek))
+@app.route("/staff/update_trek/<int:trek_id>",methods=['GET','POST'])
+def update_trek(trek_id):
+    trek = Trek.query.get_or_404(trek_id)
+    if request.method == "POST":
+        trek.Total_Slots=request.form.get("available_slots")
+        trek.Status=request.form.get("status")
+        db.session.commit()
+    return render_template("staff_dashboard")
+
+
+@app.route("/staff/participants/<int:trek_id>")
+def participants(trek_id):
+    book=Book.query.filter_by(Trek_Id=trek_id).all()
+    trek = Trek.query.get_or_404(trek_id)
+    
+    return render_template("staff_participants.html",trek=trek,book=book)
+

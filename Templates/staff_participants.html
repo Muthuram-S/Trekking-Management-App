@@ -11,27 +11,30 @@
     </head>
     <body>
         <div>
-            <i class="bi bi-people-fill"></i><h5>Participants:{{trek.name}}</h5>
+            <i class="bi bi-people-fill"></i><h5>Participants:{{trek.Trek_Name}}</h5>
         </div>
-        <table class="table-light">
-            <thead><tr><th>Booking ID</th><th>Name</th><th>Email</th><th>Booking Date</th><th>Status</th></tr></thead>
+        <table class="table table-hover table-bordered">
+            <thead class="table-dark"><tr><th>Booking ID</th><th>User Id</th><th>Name</th><th>Email</th><th>Booking Date</th><th>Status</th></tr></thead>
             <tbody>
-                {%  for i in bookings %}
-                <tr></tr>
+                {%  for i in book %}
+                <tr>
                 <td>
-                    {{i.id}}
+                    {{i.booking_id}}
                 </td>
                 <td>
-                    {{i.name}}
+                    {{i.User_Id}}
                 </td>
                 <td>
-                    {{i.email}}
+                    {{i.user.Username}}
                 </td>
                 <td>
-                    {{i.bookings}}
+                    {{i.user.Email}}
                 </td>
                 <td>
-                    {{i.status}}
+                    {{i.Booking_Date}}
+                </td>
+                <td>
+                    {{i.Status}}
                 </td>
                 </tr>
                 {% endfor %}

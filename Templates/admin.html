@@ -7,7 +7,6 @@
     Admin page
 </title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
 <body style="background-color:#F4FBFA">
@@ -43,20 +42,20 @@
         <div class="row g-3 mb-4">
             <div class="col-sm-6 col-lg-3">
                 <div class="card stat-card p-3">
-                    <div class="stat-number">{{ total_treks }}</div>
+                    <div class="stat-number">{{ trek }}</div>
                     <div class="stat-label">Total Treks</div>
                 </div>
             </div>
             <div class="col-sm-6 col-lg-3">
                 <div class="card stat-card p-3">
-                    <div class="stat-number"> {{ total_users }} </div>
+                    <div class="stat-number"> {{ count_user }} </div>
                     <div class="stat-label">Total Trekkers</div>
 
                 </div>
             </div>
             <div class="col-sm-6 col-lg-3">
                 <div class="card stat-card p-3">
-                    <div class="stat-number">{{ total_staff }}</div>
+                    <div class="stat-number">{{ count_staff }}</div>
                     <div class="stat-label">Total Staff</div>
                 </div>
             </div>
