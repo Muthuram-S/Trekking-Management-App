@@ -18,16 +18,18 @@
   </div>
     </div>
     <table class="table table-hover mb-0">
-      <thead><tr><th>ID</th><th>Name</th><th>Location</th><th>Difficulty</th><th>Slots</th><th>Status</th></tr></thead>
+      <thead><tr><th>ID</th><th>Trek</th><th>Location</th><th>Difficulty</th><th>Booked On</th><th>Staff</th><th>Trek Status</th><th>Booking Status</th><th>Action</th></tr></thead>
       <tbody>
         {% for t in recent_treks %}
         <tr>
-            <td>#{{ t.id }}</td>
-            <td>{{t.name}}</td>
-            <td>{{t.location}}</td>
-            <td>{{t.diffculty}}</td>
-            <td>{{t.status}}</td>
-        
+            <td>#{{ t.Booking_Id }}</td>
+            <td>{{t.trek.Trek_Name}}</td>
+            <td>{{t.trek.Location}}</td>
+            <td>{{t.trek.Diffculty}}</td>
+            <td>{{t.Booking_Date}}</td>
+            <td>{{t.trek.Status}}</td>
+           
+            <td>{{}}</td>
         </tr>
         {% endfor  %}
       </tbody>

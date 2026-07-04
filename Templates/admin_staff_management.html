@@ -59,7 +59,7 @@
             <td>{%if (s.staff.Status) == "Approved"%}
                     <a href="{{url_for('blacklist',staff_id=s.staff.Id)}}" class="btn btn-den">Blacklist</a>
                 {%else%}
-                    <a href="{{url_for('blacklist',staff_id=s.staff.Id)}}" class="btn btn-success">Approve</a>
+                    <a href="{{url_for('approve',staff_id=s.staff.Id)}}" class="btn btn-success">Approve</a>
            
             {%endif%}
             </td>
