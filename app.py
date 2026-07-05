@@ -10,9 +10,19 @@ db.init_app(app)
 
 from routes import *
 
-
 with app.app_context():
     db.create_all()
+
+    if not User.query.filter_by(Role="Admin").first():
+        admin = User(
+            Username="Admin",
+            Email="admin@gmail.com",
+            Password=generate_password_hash("admin123"),
+            Role="Admin",
+            Status="Approved"
+        )
+        db.session.add(admin)
+        db.session.commit()
 
 if __name__ =="__main__":
     app.run(debug=True)

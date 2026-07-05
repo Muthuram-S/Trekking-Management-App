@@ -45,7 +45,12 @@
             
             <td>{{t.Booking_Date}}</td>
             
-            <td>{{t.Status}}</td>
+            <td>{%if t.Status=="Booked"%}
+                <button class="btn btn-success">Booked</button>
+                {%else%}
+                <button class="btn btn-danger">Closed </button>
+                {%endif%}
+            </td>
           
         </tr>
         {% endfor  %}

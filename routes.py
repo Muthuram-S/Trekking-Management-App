@@ -101,7 +101,7 @@ def admin():
 
 
 @app.route('/admin/edit_trek/<int:trek_id>',methods=['GET','POST'])
-@app.route("/add_trek",methods=['GET','POST']) 
+@app.route("/admin/add_trek",methods=['GET','POST']) 
 def add_trek(trek_id=None):
     if "user_id" not in session:
         flash("Please login first.", "danger")
@@ -153,13 +153,12 @@ def add_trek(trek_id=None):
             trek.Description = description
             trek.Start_Date = start_date
             trek.End_Date = end_date
-            trek.Duration = duration
             trek.Status = status
         else:
             new_trek=Trek(Trek_Name=name,Location=location,
             Difficulty=difficulty,Total_Slots=total_slots,
             Price=price,Start_Date=start_date,Description=description,Staff_Id = staff_id,
-            End_Date=end_date,Status=status,Available_Slots=total_slots)
+            End_Date=end_date,Status=status,Available_Slots=total_slots,Duration=duration)
             db.session.add(new_trek)
         db.session.commit()
         flash('Trek added successfully!', 'success')
@@ -224,8 +223,8 @@ def staff_management():
         search=search
     )
 
-@app.route("/admin/blacklist/<int:staff_id>",methods=['POST'])
-def blacklist(staff_id):
+@app.route("/admin/staffs-blacklist/<int:staff_id>",methods=['GET','POST'])
+def staff_blacklist(staff_id):
     if "user_id" not in session:
         flash("Please login first.", "danger")
         return redirect(url_for("login"))
@@ -241,8 +240,8 @@ def blacklist(staff_id):
     db.session.commit()
     flash("staff has been blacklisted","danger")
     return redirect(url_for("staff_management"))
-@app.route("/admin/approve/<int:staff_id>",methods=['POST'])
-def approve(staff_id):
+@app.route("/admin/staffs-approve/<int:staff_id>",methods=['GET','POST'])
+def staff_approve(staff_id):
     if "user_id" not in session:
         flash("Please login first.", "danger")
         return redirect(url_for("login"))
@@ -258,6 +257,36 @@ def approve(staff_id):
     db.session.commit()
     flash("staff has been Approved","success")
     return redirect(url_for("staff_management"))
+
+@app.route("/admin/user-approve/<int:user_id>")
+def user_approve(user_id):
+    if "user_id" not in session:
+        flash("Please login first.", "danger")
+        return redirect(url_for("login"))
+
+    if session["role"] != "Admin":
+        flash("Access denied.", "danger")
+        return redirect(url_for("login"))
+    user=User.query.filter_by(Id=user_id).first()
+    user.Status="Approved"
+    db.session.commit()
+    flash("User has been Approved","success")
+    return redirect(url_for("user_management"))
+
+@app.route("/admin/user-blacklist/<int:user_id>")
+def user_blacklist(user_id):
+    if "user_id" not in session:
+        flash("Please login first.", "danger")
+        return redirect(url_for("login"))
+
+    if session["role"] != "Admin":
+        flash("Access denied.", "danger")
+        return redirect(url_for("login"))
+    user=User.query.filter_by(Id=user_id).first()
+    user.Status="Blacklisted"
+    db.session.commit()
+    flash("User has been blacklisted","danger")
+    return redirect(url_for("user_management"))
 
 @app.route("/admin/trek")
 def trek():
@@ -343,15 +372,14 @@ def update_trek(trek_id):
         if slots > trek.Total_Slots:
             flash("Available slots cannot exceed total slots.", "danger")
             return redirect(url_for("update_trek", trek_id=trek_id))
-        if status not in ["Open", "Closed", "Completed"]:
+        if status not in ["Open", "Closed"]:
             flash("Invalid status.", "danger")
             return redirect(url_for("update_trek", trek_id=trek_id))
         trek.Available_Slots=slots  
         trek.Status=status
         db.session.commit()
-        return redirect(url_for("staff_dashboard"))
+        return redirect(url_for("my_trek"))
     return render_template("staff_update.html", trek=trek)
-
 
 @app.route("/staff/participants/<int:trek_id>")
 def participants(trek_id):
@@ -380,14 +408,21 @@ def my_trek():
     if session["role"] != "Staff":
         flash("Access denied.", "danger")
         return redirect(url_for("login"))
-
+    print(session["user_id"])
     trek = Trek.query.filter_by(Staff_Id=session["user_id"]).all()
     return render_template("staff_my_trek.html", trek=trek)
 
 
 @app.route('/user/dashboard')
 def user_dashboard():
-    return
+    if "user_id" not in session:
+        flash("Please login first.", "danger")
+        return redirect(url_for("login"))
+    if session["role"] != "User":
+        flash("Access denied.", "danger")
+        return redirect(url_for("login"))
+    user=User.query.get(session["user_id"])
+    return render_template("user_dashboard.html",current_user=user)
 
 @app.route('/user/browse')
 def browse():
@@ -415,7 +450,7 @@ def browse():
     for loc in db.session.query(Trek.Location).distinct().all():
         locations.append(loc[0])
 
-    return render_template("user_booking.html",trek=trek,locations=locations,search=search,difficulty=difficulty,location=location)
+    return render_template("user_booking.html",trek=trek,locations=locations,search=search,difficulty=difficulty)
 
 
 
@@ -429,12 +464,13 @@ def my_bookings():
     if session["role"] != "User":
         flash("Access denied.", "danger")
         return redirect(url_for("login"))
-    
-    book=Book.query.filter_by(User_Id=session["user_id"])
-    book=book.order_by(Book.Booking_Date.desc()).all()
-    return render_template("user_my_bookings.html",book=book)
+    trek=Trek.query.filter_by(Staff_Id=session["user_id"])
+    book = Book.query.filter_by(User_Id=session["user_id"])\
+                            .order_by(Book.Booking_Date.desc())\
+                            .all()   
+    return render_template("user_my_bookings.html",book=book,trek=trek)
 
-@app.route("/book/<int:id>",methods=["POST"])
+@app.route("/book/<int:id>",methods=["POST","GET"])
 def booking_trek(id):
     if "user_id" not in session:
         flash("Please login first.", "danger")
@@ -465,7 +501,7 @@ def booking_trek(id):
     db.session.commit()
     return redirect(url_for("my_bookings"))
     
-@app.route("/user/cancel/<int:booking_id>",methods=["POST"])
+@app.route("/user/cancel/<int:booking_id>",methods=["POST","GET"])
 def cancel_booking(booking_id):
     if "user_id" not in session:
         flash("Please login first.", "danger")
@@ -491,3 +527,22 @@ def cancel_booking(booking_id):
 
     db.session.commit()
     return redirect(url_for("my_bookings"))
+
+@app.route("/user/profile",methods=["GET","POST"])
+def profile():
+    if "user_id" not in session:
+        flash("Please login first.", "danger")
+        return redirect(url_for("login"))
+
+    if session["role"] != "User":
+        flash("Access denied.", "danger")
+        return redirect(url_for("login"))
+    user=User.query.get(session['user_id'])
+    if request.method=="POST":
+        name=request.form.get("name")
+       
+        user.Username=name
+      
+        db.session.commit()
+        return redirect(url_for("profile"))
+    return render_template("user_profile.html",user=user)

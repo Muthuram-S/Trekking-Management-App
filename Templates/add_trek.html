@@ -19,6 +19,22 @@
         
     </div>    
     </div>
+    <div class="row justify-content-center mt-2">
+        <div class="col-md-5" style="font-size: large;">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show mb-2" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    {%block content%}
+{% endblock %}
+        </div>
+    </div>
     <div class="container">
     <div class="row justify-content-center">
     <div class="col-6  ">
@@ -29,37 +45,37 @@
       >
         <div class="mb-3">
         <label class="form-label">Trek Name</label>
-        <input class="form-control" name="trek_name" type="text" value="{{trek.Trek_Name if trek else ''}}" aria-label="default input example">
+        <input class="form-control" name="trek_name" type="text" value="{{trek.Trek_Name if trek else ''}}" aria-label="default input example" required>
         </div>
         <div class="mb-3">
         <label class="form-label">Location</label>
-        <input class="form-control" name="location" type="text" value="{{trek.Location if trek else ''}}" aria-label="default input example">
+        <input class="form-control" name="location" type="text" value="{{trek.Location if trek else ''}}" aria-label="default input example" required>
         </div>
         <div class="col-md-4 mb-3">
             <label class="form-label">Difficulty</label>
             <select name="difficulty" class="form-select">
-                {% set current_difficulty = trek.Difficulty if trek else 'Easy' %}
-                <option value="Easy" {% if current_difficulty == 'Easy' %}selected{% endif %}>Easy</option>
-                <option value="Moderate" {% if current_difficulty == 'Moderate' %}selected{% endif %}>Moderate</option>
-                <option value="Hard" {% if current_difficulty == 'Hard' %}selected{% endif %}>Hard</option>
+                {% set difficulty = trek.Difficulty if trek else 'Easy' %}
+                <option value="Easy" {% if difficulty == 'Easy' %}selected{% endif %}>Easy</option>
+                <option value="Moderate" {% if difficulty == 'Moderate' %}selected{% endif %}>Moderate</option>
+                <option value="Hard" {% if difficulty == 'Hard' %}selected{% endif %}>Hard</option>
             </select>
         </div>
         <div class="mb-3">
         <label class="form-label">Price</label>
-        <input class="form-control" name="price"   type="number" min="0" value="{{trek.Price if trek else ''}}" aria-label="default input example">
+        <input class="form-control" name="price"   type="number" min="0" value="{{trek.Price if trek else ''}}" aria-label="default input example" required>
         </div>
         <div class="mb-3">
         <label class="form-label">Total Slots</label>
-        <input class="form-control" name="total_slots" value="{{trek.Total_Slots if trek else ''}}"  type="number" min="1" aria-label="default input example">
+        <input class="form-control" name="total_slots" value="{{trek.Total_Slots if trek else ''}}"  type="number" min="1" aria-label="default input example" required>
         </div>
         <div class="mb-3">
         <label class="form-label">Start Date
         </label>    
-        <input class="form-control" type="date" name="start_date" value="{{trek.Start_Date.isoformat() if trek and trek.Start_Date else ''}}" aria-label="default input example">
+        <input class="form-control" type="date" name="start_date" value="{{trek.Start_Date.isoformat() if trek and trek.Start_Date else ''}}" aria-label="default input example" required>
         </div>
         <div class="mb-3">
         <label class="form-label">End Date</label>
-        <input class="form-control" name="end_date" type="date" value="{{trek.End_Date.isoformat() if trek and trek.End_Date else ''}}" aria-label="default input example">
+        <input class="form-control" name="end_date" type="date" value="{{trek.End_Date.isoformat() if trek and trek.End_Date else ''}}" aria-label="default input example" required>
         </div>
         <div class="mb-3">
         <label for="exampleFormControlTextarea1" class="form-label">Description</label>
@@ -86,11 +102,11 @@
 
 </select>
         {% if trek %}
-                <div class="col-md-6 mb-3">
-                    <label class="form-label">Status</label>
-                    <select name="status" class="form-select">
-                        {% set st = trek.Status if trek else 'Pending' %}
-                        {% for s in ['Pending', 'Approved', 'Open', 'Closed', 'Completed'] %}
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Status</label>
+                <select name="status" class="form-select">
+                    {% set st = trek.Status if trek else 'Pending' %}
+                        {% for s in ['Pending', 'Approved', 'Open', 'Closed'] %}
                         <option value="{{ s }}" {% if st == s %}selected{% endif %}>{{ s }}</option>
                         {% endfor %}
                     </select>

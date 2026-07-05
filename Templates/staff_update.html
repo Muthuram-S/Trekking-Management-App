@@ -10,6 +10,15 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     </head>
     <body>
+        <div class="header">
+        <div style="background-color: #2d6a4f;padding-right:40px;"
+            class="d-flex justify-content-between align-items-center p-1">
+            My Trek
+            <button type="button"
+                style=" color: black  ;background-color: #d5b1b162;float: right;border: none;margin-right: 3%;"
+                class="btn btn-secondary">Logout</button>
+        </div>
+    </div>
         <form method="POST" action="{{ url_for('update_trek', trek_id=trek.Trek_Id) }}">
         <div class="card ">
             <div class="card-header">
@@ -25,7 +34,7 @@
                     <option value="Completed" {{ 'selected' if trek.Status == 'Completed' else '' }}>Completed</option>
                 </select>
         <button type="submit" class="btn btn-success"><i class="bi bi-box-arrow-down"></i> Save Changes</button>
-        <a href="{{ url_for('staff_dashboard') }}" class="btn btn-secondary">Changes</a>
+        <a href="{{ url_for('my_trek') }}" class="btn btn-secondary">Cancel</a>
             </div>
     </body>
 </html>

@@ -16,12 +16,12 @@
             <button type="button" style=" color: black  ;background-color: #d5b1b162;float: right;border: none;margin-right: 3%;" class="btn btn-secondary">Logout</button>
         </div>
         </div>
-        <span><h1><i class="bi bi-map me-2"></i>Booking Trek</h1></span>
+        <span class="ms-4 mb-2 me-2"><h3><i class="bi bi-map me-2"></i>Booking Trek</h3></span>
         <nav class="navbar bg-body-tertiary">
-  <div class="container-fluid gap row justify-content-between">
+  <div class="container-fluid gap row justify-content-between ms-2 me-2">
     <form  method="GET" class="d-flex align-items-center gap-4" role="search">
       <input class="form-control me-2 gap-2" name="search" type="search" value="{{ search or '' }}" placeholder="Search" aria-label="Search"/>
-      <div class="dropdown">
+      
 
 
  <div class="col-md-3 ">
@@ -32,7 +32,7 @@
             <option value="Hard" {{ 'selected' if difficulty=='Hard' else '' }}>Hard</option>
           </select>
         </div>
-</div>
+
 <div class="col-md-3">
           <select name="location" class="form-select">
             <option value="">All Locations</option>
@@ -59,15 +59,13 @@
         <h4 class="fw-bold">{{t.Trek_Name}}</h4>
         <p class="text-muted mb-2"><i class="bi bi-geo-alt me-1"></i> {{ t.Location }}</p>
         <p class="text-muted mb-2"><i class="bi bi-clock"></i> {{ t.Duration }}</p>
-        <p class="text-muted mb-2"><i class="bi bi-people-fill"></i> {{ t.Total_Slots }}</p>
-        {% if t.Status="Open" and t.Available_Slots>0 %}
-        <a href="{{ url_for('book_trek', trek_id=t.Trek_Id) }}"
-        
-   class="btn btn-success">
-    Book Now
-    </a>  
-  {% else %}
-  <button class="btn btn-secondary" disabled>Unavailable</button>
+        <p class="text-muted mb-2"><i class="bi bi-people-fill"></i> {{ t.Available_Slots }}/{{t.Total_Slots}}</p>
+        {% if t.Status=="Open" and t.Available_Slots>0 %}
+        <a href="{{ url_for('booking_trek', id=t.Trek_Id) }}"class="btn btn-success"> Book Now</a>
+        {% else %}
+        <button class="btn btn-success" disabled> Book Now</button>
+
+  {%endif%}
     </div>
 </div>
 </div>

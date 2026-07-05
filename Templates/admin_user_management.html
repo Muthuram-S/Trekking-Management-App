@@ -34,22 +34,28 @@
             <th>Email</th>
             <th>Bookings</th>
             <th>Status</th>
-           ]
+           
         </thead>
         <tbody>
           
-                {%for i in user%}
+                {%for i in users%}
+                <tr>
                     <td>#{{i.Id}}</td>
                     <td>{{i.Username}}</td>
                     <td>{{i.Email}}</td>
-                    <td>{{booking_count}}</td>
-                    <td>{% if i.Status=="Approved"%}
-                        <a href="#" class="btn btn-danger btn-sm">Blacklist</a>
+                    <td>{%if booking_count%}
+                        {{i.booking_count}}
                         {%else%}
-                        <a href="#" class="btn btn-success btn-sm">Approve</a>
+                        {{0}}
                         {%endif%}
                     </td>
-                   
+                    <td>{% if i.Status=="Approved"%}
+                        <a href="{{url_for('user_blacklist',user_id=i.Id)}}" class="btn btn-danger btn-sm">Blacklist</a>
+                        {%else%}
+                        <a href="{{url_for('user_approve',user_id=i.Id)}}"class="btn btn-success btn-sm">Approve</a>
+                        {%endif%}
+                    </td>
+                   </tr>
             {%endfor%}
         </tbody>
         </table>
