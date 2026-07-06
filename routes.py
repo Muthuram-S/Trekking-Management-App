@@ -53,21 +53,21 @@ def register():
             role = "User"
         exist_user=User.query.filter_by(Email=email).first()
 
-        error=[]
+        error_reg=[]
 
         if not name:
-            error.append("Name is required")
+            error_reg.append("Name is required")
         if "@" not in email:
-            error.append("Invalid email")
+            error_reg.append("Invalid email")
         if len(password)<6:
-            error.append("Password must be at least 6 character long")
+            error_reg.append("Password must be at least 6 character long")
         if password!=confirm_password:
-            error.append("password do not match")
+            error_reg.append("password do not match")
   
         if exist_user:
-            error.append("This email already exists")
-        if error:
-            for e in error:
+            error_reg.append("This email already exists")
+        if error_reg:
+            for e in error_reg:
                 flash(e, "danger")
             return render_template("register.html", form=request.form)
         if role=='Staff':
@@ -85,6 +85,11 @@ def register():
         return redirect(url_for('login'))
     return render_template("register.html")
 
+@app.route("/logout")
+def logout():
+    session.clear() 
+    return redirect (url_for('login'))
+
 @app.route('/admin')
 def admin():
     if "user_id" not in session:
@@ -93,11 +98,16 @@ def admin():
     if session["role"] != "Admin":
         flash("Access denied.", "danger")
         return redirect(url_for("login"))
-    user=User.query.filter_by(Role="User").count()
+    trek_detail=Trek.query.limit(5)
+    user_list=User.query.limit(5)
+    user_count=User.query.filter_by(Role="User").count()
     staff=User.query.filter_by(Role="Staff").count()
-    bookings=Book.query.count()
+    bookings=Book.query.filter_by(Status="Booked").count()
     trek=Trek.query.count()
-    return render_template("admin.html",count_user=user,count_staff=staff,trek=trek,total_bookings=bookings)
+    users=User.query.filter_by(Role='User').all()
+    for user in users:
+        user.bookings_count=Book.query.filter_by(User_Id=user.Id,Status="Booked").count()
+    return render_template("admin.html",count_user=user_count,count_staff=staff,trek=trek,total_bookings=bookings,trek_detail=trek_detail,user_list=user_list,users=users)
 
 
 @app.route('/admin/edit_trek/<int:trek_id>',methods=['GET','POST'])
@@ -165,7 +175,7 @@ def add_trek(trek_id=None):
         return redirect(url_for('trek'))
     return render_template('add_Trek.html',staffs=staffs,trek=trek)
 
-
+#admin_trek
 
 
 @app.route("/admin/user_management")
@@ -185,12 +195,12 @@ def user_management():
         users = User.query.filter(User.Role == "User", User.Id == int(search)).all()
 
     else:
-        users=User.query.filter(        
+        users=User.query.filter(
             User.Role=="User",
             User.Username.ilike(f"%{search}%")
         ).all()
     for user in users:
-        user.bookings_count=Book    .query.filter_by(User_Id=user.Id).count()
+        user.bookings_count=Book.query.filter_by(User_Id=user.Id,Status="Booked").count()
     return render_template(
         "admin_user_management.html",users=users,search=search
     )
@@ -216,7 +226,7 @@ def staff_management():
             User.Username.ilike(f"%{search}%")
         ).all()
     for staff in staffs:
-        staff.assigned_treks = Trek.query.filter_by(Staff_Id=staff.Id).count()
+        staff.assigned_treks = Trek.query.filter_by(Staff_Id=staff.Id).all()
     return render_template(
         "admin_staff_management.html",
         staffs=staffs,
@@ -341,12 +351,13 @@ def staff_dashboard():
     if session["role"] != "Staff":
         flash("Access denied.", "danger")
         return redirect(url_for("login"))
-
+    user_name=User.query.filter_by(Id=session['user_id']).first().Username
     staff_id=session["user_id"]
+    treks_count = Trek.query.filter_by(Staff_Id=staff_id).all()
     
+    count_trek=Book.query.join(Trek).filter(Book.Status == "Booked",Trek.Staff_Id == session["user_id"]).count()
     trek=Trek.query.filter_by(Staff_Id=staff_id).all()
-    return render_template("staff_dashboard.html", trek=trek)
-
+    return render_template("staff_dashboard.html", trek=trek,user_name=user_name,count_trek=count_trek,treks_count=len(treks_count))
 @app.route("/staff/update_trek/<int:trek_id>",methods=['GET','POST'])
 def update_trek(trek_id):
     if "user_id" not in session:
@@ -372,7 +383,7 @@ def update_trek(trek_id):
         if slots > trek.Total_Slots:
             flash("Available slots cannot exceed total slots.", "danger")
             return redirect(url_for("update_trek", trek_id=trek_id))
-        if status not in ["Open", "Closed"]:
+        if status not in ["Open", "Closed","Complete"]:
             flash("Invalid status.", "danger")
             return redirect(url_for("update_trek", trek_id=trek_id))
         trek.Available_Slots=slots  
@@ -421,8 +432,15 @@ def user_dashboard():
     if session["role"] != "User":
         flash("Access denied.", "danger")
         return redirect(url_for("login"))
+    trek=Trek.query.filter_by()
     user=User.query.get(session["user_id"])
-    return render_template("user_dashboard.html",current_user=user)
+    Available_trek = Trek.query.filter_by(Status='Open').limit(3).all()
+    open_treks_count = Trek.query.filter_by(Status="Open").count()
+    book=Book.query.filter_by(User_Id=session['user_id'],Status="Booked").count()
+    complete_count=Book.query.filter_by(User_Id=session['user_id'],Status="Completed").count()
+    my_bookings = Book.query.filter_by(User_Id=session['user_id']).order_by(Book.booking_id.desc()).all()
+
+    return render_template("user_dashboard.html",current_user=user,book_count=open_treks_count,complete_count=complete_count,booking_count=book,my_bookings=my_bookings,treks=Available_trek)
 
 @app.route('/user/browse')
 def browse():

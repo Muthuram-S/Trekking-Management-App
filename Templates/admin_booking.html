@@ -10,15 +10,27 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     </head>
     <div>
-        <div class="header 	--bs-success-bg-subtle">
-        <div style="background-color:#2d6a4f;padding-right:40px;" class="d-flex justify-content-between align-items-center p-1">
-            Admin's Dashboard
-            
-            <button type="button" style=" color: black  ;background-color: #d5b1b162;float: right;border: none;margin-right: 3%;" class="btn btn-secondary">Logout</button>
-        </div>
-        
-    </div>
-        
+        <nav class="navbar navbar-expand-lg " style="background-color: #2F5233;">
+            <div class="container-fluid">
+                <h4 class="ms-2">TrekManager</h4>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                    <div class="navbar-nav ms-auto">
+                        <a class="nav-link " href="{{url_for('admin')}}">Dashboard</a>
+                        <a class="nav-link" href="{{url_for('user_management')}}">Users</a>
+                        <a class="nav-link" href="{{url_for('trek')}}">Treks</a>
+                        <a class="nav-link" href="{{url_for('staff_management')}}">Staffs</a>
+                        <a class="nav-link" href="{{url_for('bookings')}}">Bookings</a>
+                        <a class="btn btn-warning " >Admin</a>
+                        <a class="nav-link " href="#">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
     </div>
         <div class="container">
         <div class=" row justify-content-center">
@@ -43,7 +55,7 @@
             
             <td>{{t.Trek_Id}}</td>
             
-            <td>{{t.Booking_Date}}</td>
+            <td>{{t.Booking_Date.strftime("%d-%m-%y")}}</td>
             
             <td>{%if t.Status=="Booked"%}
                 <button class="btn btn-success">Booked</button>

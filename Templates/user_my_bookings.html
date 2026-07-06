@@ -10,12 +10,21 @@
 <body>
   <div class="header 	">
         <div style="background-color:#2d6a4f;padding-right:40px;" class="d-flex justify-content-between align-items-center p-1">
-            User's Dashboard
-            <button type="button" style=" color: black  ;background-color: #d5b1b162;float: right;border: none;margin-right: 3%;" class="btn btn-secondary">Logout</button>
-        </div>
+            <h4 class="ms-2">TrekManager</h4>
+        <nav class="navbar navbar-expand-lg " >
+        <div class="container-fluid">
+            <ul class="navbar-nav flex-row gap-3 mx-auto">
+                <li class="nav-item"><a class="nav-link " href="{{url_for('user_dashboard')}}">Dashboard</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{url_for('my_bookings')}}">My Booking</a></li>
+                <li class="nav-item"><a class="nav-link " href="{{url_for('profile')}}">Profile</a></li>
+                <li class="nav-item"><a class="nav-link badge text-bg-warning mt-2">User</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}">Logout</a></li>
+            </ul>
+        </div></div>
+    </nav>
         
         </div>
-    <h4 class="mb-4 mt-3"><i class="bi bi-clock-history"></i> My Bookings & Trekking History</h4>
+    <h4 class="mb-4 ms-4 mt-3"><i class="bi bi-clock-history"></i> My Bookings & Trekking History</h4>
     <div class="container">
     <div class="row justify-content-center">
     <div class="col-12">
@@ -30,7 +39,7 @@
             <td>{{t.trek.Trek_Name}}</td>
             <td>{{t.trek.Location}}</td>
             <td>{{t.trek.Difficulty}}</td>
-            <td>{{t.Booking_Date}}</td>
+            <td>{{t.Booking_Date.strftime("%d %b %Y") }}</td>
             <td>{{t.user.Username}}</td>
             <td>{{t.trek.Status}}</td>
             <td>{{t.Status}}</td>

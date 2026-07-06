@@ -10,7 +10,23 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     </head>
     <body>
-        <h2 class="mb-4">My Profile</h2>
+        <div class="header 	">
+        <div style="background-color:#2d6a4f;padding-right:40px;" class="d-flex justify-content-between align-items-center p-1">
+           <h4 class="ms-2">TrekManager</h4>
+        <nav class="navbar navbar-expand-lg " >
+        <div class="container-fluid">
+            <ul class="navbar-nav flex-row gap-3 mx-auto">
+                <li class="nav-item"><a class="nav-link " href="{{url_for('user_dashboard')}}">Dashboard</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{url_for('my_bookings')}}">My Booking</a></li>
+                <li class="nav-item"><a class="nav-link " href="{{url_for('profile')}}">Profile</a></li>
+                <li class="nav-item"><a class="nav-link badge text-bg-warning mt-2">User</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}">Logout</a></li>
+            </ul>
+        </div></div>
+    </nav>
+        
+        </div>
+        <h2 class="mt-4 mb-4 row justify-content-center">My Profile</h2>
         <div class="row justify-content-center">
             <div class="col-md-6 border border-0">
             <div class="card p-4">
@@ -29,7 +45,9 @@
         <p>contact</p>
         <input class="form-control" type="text" name="contact"  value="{{ user.name }}" aria-label="Disabled input example"  >
         </div>
+        <button type="submit" class="btn btn-success ">Save Changes</button>
         </div>
+        
         </form>
         </div>
         </div>
