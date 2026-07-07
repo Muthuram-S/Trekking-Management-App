@@ -156,7 +156,7 @@ def add_trek(trek_id=None):
         if errors:
             for e in errors:
                 flash(e, "danger")
-            return render_template('add_Trek.html', staffs=staffs, trek=trek)
+            return render_template('add_trek.html', staffs=staffs, trek=trek)
         if trek:
             trek.Trek_Name = name
             trek.Location = location
@@ -165,7 +165,7 @@ def add_trek(trek_id=None):
             if total_slots<already_booked:
                 flash("cannot reduce the total slots below the already booked")
                 return redirect(url_for('add_trek',trek_id=trek.Trek_Id))
-            trek.Total_Slots = total_slotsts
+            trek.Total_Slots = total_slots
             trek.Available_Slots+=total_slots-already_booked
             trek.Price = price
             trek.Staff_Id = staff_id
@@ -326,7 +326,7 @@ def trek():
             trek=trek.filter(Trek.Trek_Id==int(search))
         else:
             trek=trek.filter(Trek.Trek_Name.ilike(f"%{search}%"))
-    trek=Trek.order_by(Trek.Trek_Id.desc()).all()
+    trek = trek.order_by(Trek.Trek_Id.desc()).all()
     
     return render_template("admin_trek.html",trek=trek)
 
@@ -402,13 +402,13 @@ def update_trek(trek_id):
         if slots > trek.Total_Slots:
             flash("Available slots cannot exceed total slots.", "danger")
             return redirect(url_for("update_trek", trek_id=trek_id))
-        if status not in ["Open", "Closed","Completd"]:
+        if status not in ["Open", "Closed","Completed"]:
             flash("Invalid status.", "danger")
             return redirect(url_for("update_trek", trek_id=trek_id))
         trek.Available_Slots=slots  
         trek.Status=status
         if status=="Completed":
-                Book.query.filter_by(Trek_Id=trek.Trek_Id, status="Booked").update({"Status":"Completed"})
+                Book.query.filter_by(Trek_Id=trek.Trek_Id, Status="Booked").update({"Status":"Completed"})
         db.session.commit()
         return redirect(url_for("my_trek"))
     return render_template("staff_update.html", trek=trek)
@@ -461,7 +461,7 @@ def staff_profile():
             return redirect(url_for('staff_profile'))
         staff.Username=name
         db.session.commit()
-        return redirect(url_for("profile"))
+        return redirect(url_for("staff_profile"))
     return render_template("staff_profile.html",user=staff)
 
 @app.route('/user/dashboard')
@@ -472,7 +472,7 @@ def user_dashboard():
     if session["role"] != "User":
         flash("Access denied.", "danger")
         return redirect(url_for("login"))
-    trek=Trek.query.filter_by()
+
     user=User.query.get(session["user_id"])
     Available_trek = Trek.query.filter_by(Status='Open').limit(3).all()
     open_treks_count = Trek.query.filter_by(Status="Open").count()
@@ -522,11 +522,11 @@ def my_bookings():
     if session["role"] != "User":
         flash("Access denied.", "danger")
         return redirect(url_for("login"))
-    trek=Trek.query.filter_by(Staff_Id=session["user_id"])
+
     book = Book.query.filter_by(User_Id=session["user_id"])\
                             .order_by(Book.Booking_Date.desc())\
                             .all()   
-    return render_template("user_my_bookings.html",book=book,trek=trek)
+    return render_template("user_my_bookings.html",book=book)
 
 @app.route("/book/<int:id>",methods=["POST","GET"])
 def booking_trek(id):
