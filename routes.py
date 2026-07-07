@@ -87,7 +87,9 @@ def register():
 
 @app.route("/logout")
 def logout():
-    session.clear() 
+    session.clear()
+    session.pop("user_id", None)
+    session.pop("role", None) 
     return redirect (url_for('login'))
 
 @app.route('/admin')
@@ -149,6 +151,8 @@ def add_trek(trek_id=None):
             errors.append("Price cannot be negative.")
         if end_date < start_date:
             errors.append("Give valid date.")
+        if status not in ('Pending','Approved',"Open","Closed","Completed"):
+            errors.append("select proper status")
         if errors:
             for e in errors:
                 flash(e, "danger")
@@ -157,13 +161,21 @@ def add_trek(trek_id=None):
             trek.Trek_Name = name
             trek.Location = location
             trek.Difficulty = difficulty
-            trek.Total_Slots = total_slots
+            already_booked = trek.Total_Slots - trek.Available_Slots
+            if total_slots<already_booked:
+                flash("cannot reduce the total slots below the already booked")
+                return redirect(url_for('add_trek',trek_id=trek.Trek_Id))
+            trek.Total_Slots = total_slots-trek.Total_Slots
+            trek.Available_Slots+=total_slots-trek.Total_Slots
             trek.Price = price
             trek.Staff_Id = staff_id
             trek.Description = description
             trek.Start_Date = start_date
             trek.End_Date = end_date
+            trek.Duration=duration
             trek.Status = status
+            if status=="Completed":
+                Book.query.filter_by(Trek_Id=trek.Trek_Id, status="Booked").update({"Status":"Completed"})
         else:
             new_trek=Trek(Trek_Name=name,Location=location,
             Difficulty=difficulty,Total_Slots=total_slots,
@@ -173,9 +185,9 @@ def add_trek(trek_id=None):
         db.session.commit()
         flash('Trek added successfully!', 'success')
         return redirect(url_for('trek'))
-    return render_template('add_Trek.html',staffs=staffs,trek=trek)
+    return render_template('add_trek.html',staffs=staffs,trek=trek)
 
-#admin_trek
+
 
 
 @app.route("/admin/user_management")
@@ -307,6 +319,13 @@ def trek():
     if session["role"] != "Admin":
         flash("Access denied.", "danger")
         return redirect(url_for("login"))
+    search=request.args.get("search").strip()
+    trek=Trek.query
+    if search:
+        if search.isdigit():
+            trek=trek.filter(Trek.Trek_Id==int(search))
+        else:
+            trek=trek.filter(Trek.trek_Name.ilike(f"%{search}%"))
     trek=Trek.query.order_by(Trek.Trek_Id.desc()).all()
     
     return render_template("admin_trek.html",trek=trek)
@@ -383,11 +402,13 @@ def update_trek(trek_id):
         if slots > trek.Total_Slots:
             flash("Available slots cannot exceed total slots.", "danger")
             return redirect(url_for("update_trek", trek_id=trek_id))
-        if status not in ["Open", "Closed","Complete"]:
+        if status not in ["Open", "Closed","Completd"]:
             flash("Invalid status.", "danger")
             return redirect(url_for("update_trek", trek_id=trek_id))
         trek.Available_Slots=slots  
         trek.Status=status
+        if status=="Completed":
+                Book.query.filter_by(Trek_Id=trek.Trek_Id, status="Booked").update({"Status":"Completed"})
         db.session.commit()
         return redirect(url_for("my_trek"))
     return render_template("staff_update.html", trek=trek)
@@ -419,10 +440,29 @@ def my_trek():
     if session["role"] != "Staff":
         flash("Access denied.", "danger")
         return redirect(url_for("login"))
-    print(session["user_id"])
     trek = Trek.query.filter_by(Staff_Id=session["user_id"]).all()
     return render_template("staff_my_trek.html", trek=trek)
 
+
+@app.route("/staff/profile",methods=["GET","POST"])
+def staff_profile():
+    if "user_id" not in session:
+        flash("Please login first.", "danger")
+        return redirect(url_for("login"))
+
+    if session["role"] != "Staff":
+        flash("Access denied.", "danger")
+        return redirect(url_for("login"))
+    user=User.query.get(session['user_id'])
+    if request.method=="POST":
+        name=request.form.get("name")
+        if not name:
+            flash('Name is required','danger')
+            return redirect(url_for('staff_profile'))
+        user.Username=name
+        db.session.commit()
+        return redirect(url_for("profile"))
+    return render_template("user_profile.html",user=user)
 
 @app.route('/user/dashboard')
 def user_dashboard():
@@ -452,7 +492,7 @@ def browse():
         flash("Access denied.", "danger")
         return redirect(url_for("login"))
     
-    search=request.args.get("search")
+    search=request.args.get("search").strip()
     difficulty=request.args.get("difficulty")
     location=request.args.get("location")
 
