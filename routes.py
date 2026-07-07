@@ -165,8 +165,8 @@ def add_trek(trek_id=None):
             if total_slots<already_booked:
                 flash("cannot reduce the total slots below the already booked")
                 return redirect(url_for('add_trek',trek_id=trek.Trek_Id))
-            trek.Total_Slots = total_slots-trek.Total_Slots
-            trek.Available_Slots+=total_slots-trek.Total_Slots
+            trek.Total_Slots = total_slotsts
+            trek.Available_Slots+=total_slots-already_booked
             trek.Price = price
             trek.Staff_Id = staff_id
             trek.Description = description
@@ -175,7 +175,7 @@ def add_trek(trek_id=None):
             trek.Duration=duration
             trek.Status = status
             if status=="Completed":
-                Book.query.filter_by(Trek_Id=trek.Trek_Id, status="Booked").update({"Status":"Completed"})
+                Book.query.filter_by(Trek_Id=trek.Trek_Id, Status="Booked").update({"Status":"Completed"})
         else:
             new_trek=Trek(Trek_Name=name,Location=location,
             Difficulty=difficulty,Total_Slots=total_slots,
@@ -319,14 +319,14 @@ def trek():
     if session["role"] != "Admin":
         flash("Access denied.", "danger")
         return redirect(url_for("login"))
-    search=request.args.get("search").strip()
+    search=request.args.get("search","").strip()
     trek=Trek.query
     if search:
         if search.isdigit():
             trek=trek.filter(Trek.Trek_Id==int(search))
         else:
-            trek=trek.filter(Trek.trek_Name.ilike(f"%{search}%"))
-    trek=Trek.query.order_by(Trek.Trek_Id.desc()).all()
+            trek=trek.filter(Trek.Trek_Name.ilike(f"%{search}%"))
+    trek=Trek.order_by(Trek.Trek_Id.desc()).all()
     
     return render_template("admin_trek.html",trek=trek)
 
@@ -492,7 +492,7 @@ def browse():
         flash("Access denied.", "danger")
         return redirect(url_for("login"))
     
-    search=request.args.get("search").strip()
+    search=request.args.get("search","").strip()
     difficulty=request.args.get("difficulty")
     location=request.args.get("location")
 
