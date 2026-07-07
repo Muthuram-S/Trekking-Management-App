@@ -453,16 +453,16 @@ def staff_profile():
     if session["role"] != "Staff":
         flash("Access denied.", "danger")
         return redirect(url_for("login"))
-    user=User.query.get(session['user_id'])
+    staff=User.query.get(session['user_id'])
     if request.method=="POST":
         name=request.form.get("name")
         if not name:
             flash('Name is required','danger')
             return redirect(url_for('staff_profile'))
-        user.Username=name
+        staff.Username=name
         db.session.commit()
         return redirect(url_for("profile"))
-    return render_template("user_profile.html",user=user)
+    return render_template("staff_profile.html",user=staff)
 
 @app.route('/user/dashboard')
 def user_dashboard():

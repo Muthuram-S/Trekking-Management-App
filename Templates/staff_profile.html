@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+        <title>
+            Profile
+        </title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    </head>
+    <body>
+        <div class="header 	">
+        <div style="background-color:#2d6a4f;padding-right:40px;" class="d-flex justify-content-between align-items-center p-1">
+            <h4 class="ms-2">TrekManager</h4>
+        <nav class="navbar navbar-expand-lg " >
+        <div class="container-fluid">
+            <ul class="navbar-nav flex-row gap-3 mx-auto">
+                <li class="nav-item"><a class="nav-link " href="{{url_for('staff_dashboard')}}">Dashboard</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{url_for('my_trek')}}">My Treks</a></li>
+                <li class="nav-item"><a class="nav-link badge text-bg-warning mt-2">Staff</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}">Logout</a></li>
+            </ul>
+        </div></div>
+    </nav>
+        
+        </div>
+        <h2 class="mt-4 mb-4 row justify-content-center">My Profile</h2>
+        <div class="row justify-content-center">
+            <div class="col-md-6 border border-0">
+            <div class="card p-4">
+            
+        <form method="POST" action="{{ url_for('profile') }}">
+      
+        <div class="mb-3">
+        <p>Full Name</p>
+        <input class="form-control" type="text" name="name" value="{{ user.Username }}" aria-label="Disabled input example"  >
+        </div>
+        <div class="mb-3">
+        <p>E-mail</p>
+        <input class="form-control" type="text" value="{{user.Email }}" aria-label="Disabled input example" disabled readonly>
+        </div>
+        <div class="mb-3">
+        <p>contact</p>
+        <input class="form-control" type="text" name="contact"  value="{{ user.name }}" aria-label="Disabled input example"  >
+        </div>
+        <button type="submit" class="btn btn-success ">Save Changes</button>
+        </div>
+        
+        </form>
+        </div>
+        </div>
+    </div>
+    </body>
+</html>
