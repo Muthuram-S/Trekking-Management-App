@@ -6,7 +6,7 @@ db=SQLAlchemy()
 class User(db.Model):
     Id=db.Column(db.Integer,primary_key=True)
     Username=db.Column(db.String(100),unique=False,nullable=False)
-    
+    Contact=db.Column(db.Integer)
     Email=db.Column(db.String(100),unique=True,nullable=False)
     Password=db.Column(db.String(100),unique=False,nullable=False)
     Role=db.Column(db.String(100),nullable=False)
@@ -36,3 +36,4 @@ class Book(db.Model):
     Trek_Id=db.Column(db.Integer,db.ForeignKey('trek.Trek_Id'),nullable=False)
     Booking_Date=db.Column(db.DateTime,nullable=False,default=dt.now)
     Status=db.Column(db.String(100),nullable=False)
+

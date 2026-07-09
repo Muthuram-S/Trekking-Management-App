@@ -11,15 +11,16 @@
     </head>
     <body>
         <div class="header 	">
-        <div style="background-color:#2d6a4f;padding-right:40px;" class="d-flex justify-content-between align-items-center p-1">
-           <h4 class="ms-2">TrekManager</h4>
+        <div style="background-color:#2F5233;padding-right:40px;" class="d-flex justify-content-between align-items-center p-1">
+           <a class="navbar-brand fw-bold text-white" href="{{ url_for('user_dashboard') }}">TrekManager</a>
         <nav class="navbar navbar-expand-lg " >
         <div class="container-fluid">
             <ul class="navbar-nav flex-row gap-3 mx-auto">
                 <li class="nav-item"><a class="nav-link " href="{{url_for('user_dashboard')}}">Dashboard</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{url_for('my_bookings')}}">My Booking</a></li>
+                <li class="nav-item"><a class="nav-link " href="{{url_for('browse')}}">Browse Trek</a></li>
                 <li class="nav-item"><a class="nav-link " href="{{url_for('profile')}}">Profile</a></li>
-                <li class="nav-item"><a class="nav-link badge text-bg-warning mt-2">User</a></li>
+                <a class="btn btn-warning " >User</a>
                 <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}">Logout</a></li>
             </ul>
         </div></div>
@@ -42,8 +43,8 @@
         <input class="form-control" type="text" value="{{user.Email }}" aria-label="Disabled input example" disabled readonly>
         </div>
         <div class="mb-3">
-        <p>contact</p>
-        <input class="form-control" type="text" name="contact"  value="{{ user.name }}" aria-label="Disabled input example"  >
+        <p>Contact</p>
+        <input class="form-control" type="text" name="contact"  value="{{ user.Contact }}" aria-label="Disabled input example"  >
         </div>
         <button type="submit" class="btn btn-success ">Save Changes</button>
         </div>

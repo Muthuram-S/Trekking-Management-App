@@ -12,7 +12,7 @@
     <nav class="navbar navbar-expand-lg " style="background-color: #2F5233;">
     <div class="container-fluid">
         
-            <h4 class="ms-2">TrekManager</h4>
+            <a class="navbar-brand fw-bold text-white" href="{{ url_for('staff_dashboard') }}">TrekManager</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false"
                     aria-label="Toggle navigation">
@@ -22,7 +22,7 @@
         <div class="navbar-nav ms-auto">
                 <a class="nav-link " href="{{url_for('staff_dashboard')}}">Dashboard</a>
                 <a class="nav-link" href="{{url_for('my_trek')}}">My Treks</a>
-
+                <a class="nav-link" href="{{url_for('staff_profile')}}">Profile</a>
                 <a class="btn btn-warning " >Staff</a>
                 <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
         </div>
@@ -32,8 +32,8 @@
         
         </div>
         <h4 class="mt-4 ms-3">Welcome Back!, {{user_name}}</h4>
-        <div class="row g-3 mb-4">
-    <div class="col-sm-6 col-lg-3">
+        <div class="row g-3 mb-4 ms-4 mt-3">
+    <div class="col-sm-6 col-lg-3 me-4">
         <div class="card stat-card p-3">
             <div class="stat-number">{{count_trek}}</div>
             <div class="stat-label">Total Treks</div>

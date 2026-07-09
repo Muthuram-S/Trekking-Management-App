@@ -457,12 +457,15 @@ def staff_profile():
         flash("Access denied.", "danger")
         return redirect(url_for("login"))
     staff=User.query.get(session['user_id'])
+    contact=staff.Contact
     if request.method=="POST":
         name=request.form.get("name")
+        contact=request.form.get("contact")
         if not name:
             flash('Name is required','danger')
             return redirect(url_for('staff_profile'))
         staff.Username=name
+        staff.Contact=contact
         db.session.commit()
         return redirect(url_for("staff_profile"))
     return render_template("staff_profile.html",user=staff)
@@ -599,10 +602,13 @@ def profile():
         flash("Access denied.", "danger")
         return redirect(url_for("login"))
     user=User.query.get(session['user_id'])
+    contact=user.Contact
     if request.method=="POST":
         name=request.form.get("name")
+        contact=request.form.get("contact")
        
         user.Username=name
+        user.Contact=contact
       
         db.session.commit()
         return redirect(url_for("profile"))
