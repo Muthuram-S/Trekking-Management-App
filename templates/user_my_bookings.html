@@ -40,7 +40,11 @@
             <td>{{t.trek.Location}}</td>
             <td>{{t.trek.Difficulty}}</td>
             <td>{{t.Booking_Date.strftime("%d %b %Y") }}</td>
-            <td>{{t.user.Username}}</td>
+            <td>{% if t.user %}
+                  {{t.user.Username}}
+                {%else%}
+                  {{Unassigned}}
+            </td>
             <td>{{t.trek.Status}}</td>
             <td>{{t.Status}}</td>
             <td>
@@ -53,7 +57,7 @@
            
           
         </tr>
-        {% endfor  %}
+        {% endfor%}
       </tbody>
         </table>
         </div>

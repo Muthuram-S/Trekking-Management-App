@@ -166,7 +166,7 @@ def add_trek(trek_id=None):
                 flash("cannot reduce the total slots below the already booked")
                 return redirect(url_for('add_trek',trek_id=trek.Trek_Id))
             trek.Total_Slots = total_slots
-            trek.Available_Slots+=total_slots-already_booked
+            trek.Available_Slots=total_slots-already_booked
             trek.Price = price
             trek.Staff_Id = staff_id
             trek.Description = description
