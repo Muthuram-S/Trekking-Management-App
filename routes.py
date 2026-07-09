@@ -100,6 +100,9 @@ def admin():
     if session["role"] != "Admin":
         flash("Access denied.", "danger")
         return redirect(url_for("login"))
+    
+    
+
     trek_detail=Trek.query.limit(5)
     user_list=User.query.limit(5)
     user_count=User.query.filter_by(Role="User").count()
@@ -109,7 +112,7 @@ def admin():
     users=User.query.filter_by(Role='User').all()
     for user in users:
         user.bookings_count=Book.query.filter_by(User_Id=user.Id,Status="Booked").count()
-    return render_template("admin.html",count_user=user_count,count_staff=staff,trek=trek,total_bookings=bookings,trek_detail=trek_detail,user_list=user_list,users=users)
+    return render_template("admin.html",total_user=user_count,total_staff=staff,total_trek=trek,total_bookings=bookings,trek_detail=trek_detail,user_list=user_list,users=users)
 
 
 @app.route('/admin/edit_trek/<int:trek_id>',methods=['GET','POST'])

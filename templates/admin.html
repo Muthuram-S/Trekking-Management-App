@@ -33,42 +33,34 @@
             </div>
         </nav>
 
-        <div class="container-fluid py-3 p-5">
-            <form class="d-flex " role="search">
-                <input class="form-control me-2 " style="width:600px;background-color:transparent;" type="search"
-                    placeholder="Search" aria-label="Search" />
-                <div></div>
-                <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
-        </div>
+      
 
-        <div class="row g-3 ms-2 me-2 mb-4">
-            <div class="col-sm-6 col-lg-3">
-                <div class="card stat-card p-3">
-                    <div class="stat-number">{{ trek }}</div>
-                    <div class="stat-label">Total Treks</div>
-                </div>
-            </div>
-            <div class="col-sm-6 col-lg-3">
-                <div class="card stat-card p-3">
-                    <div class="stat-number"> {{ count_user }} </div>
-                    <div class="stat-label">Total Trekkers</div>
-
-                </div>
-            </div>
-            <div class="col-sm-6 col-lg-3">
-                <div class="card stat-card p-3">
-                    <div class="stat-number">{{ count_staff }}</div>
-                    <div class="stat-label">Total Staff</div>
-                </div>
-            </div>
-            <div class="col-sm-6 col-lg-3">
-                <div class="card stat-card p-3">
-                    <div class="stat-number">{{ total_bookings }}</div>
-                    <div class="stat-label">Total Bookings</div>
-                </div>
-            </div>
+        <div class="row g-3 mb-4">
+    <div class="col-sm-6 col-lg-3">
+        <div class="card stat-card p-3">
+            <div class="stat-number">{{ total_treks }}</div>
+            <div class="stat-label">Total Treks</div>
         </div>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+        <div class="card stat-card p-3">
+            <div class="stat-number">{{ total_users }}</div>
+            <div class="stat-label">Total Trekkers</div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+        <div class="card stat-card p-3">
+            <div class="stat-number">{{ total_staff }}</div>
+            <div class="stat-label">Total Staff</div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+        <div class="card stat-card p-3">
+            <div class="stat-number">{{ total_bookings }}</div>
+            <div class="stat-label">Total Bookings</div>
+        </div>
+    </div>
+</div>
         <br>
         <div class="row g-4 mb-4 row-cols-2 row-cols-md-4 g-4 ms-2 ">
             <div class="col-md-6">
@@ -147,9 +139,9 @@
                         {%endif%}
                     </td>
                     <td>{% if i.Status=="Approved"%}
-                        <a class="btn btn-danger btn-sm">Blacklist</a>
+                        <a   href="{{url_for('user_blacklist',user_id=i.Id)}}" class="btn btn-danger btn-sm">Blacklist</a>
                         {%else%}
-                        <button class="btn btn-success btn-sm">Approve</button>
+                        <a  href="{{url_for('user_approve',user_id=i.Id)}}"  class="btn btn-success btn-sm">Approve</a>
                         {%endif%}
                     </td>
                    </tr>
