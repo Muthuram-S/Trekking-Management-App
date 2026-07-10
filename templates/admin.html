@@ -110,7 +110,7 @@
                     {%else%}
                 <tr>
                     <td colspan="6">
-                        <p div class="text-center">No Participants Registered</p>
+                        <p div class="text-center">No Treks Registered</p>
                     </td>
                 </tr>
                     {% endfor  %}
@@ -132,7 +132,7 @@
         </thead>
         <tbody>
           
-                {%for i in user_list%}
+                {%for i in user_list[1:]%}
                 <tr>
                     <td>{{i.Id}}</td>
                     <td>{{i.Username}}</td>
@@ -150,6 +150,12 @@
                         {%endif%}
                     </td>
                    </tr>
+                   {%else%}
+                <tr>
+                    <td colspan="6">
+                        <p div class="text-center">No Participants Registered</p>
+                    </td>
+                </tr>
             {%endfor%}
         </tbody>
         </table>

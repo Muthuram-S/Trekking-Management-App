@@ -67,8 +67,8 @@
                         <td>{{t.Status}}</td>
                         <td>
                             <div>
-                                <a href="{{url_for('update_trek',trek_id=t.Trek_Id)}}" class="btn btn-success"><i class="bi bi-pencil"></i> Update</a>
-                                <a href="{{url_for('participants',trek_id=t.Trek_Id)}}" class="btn btn-secondary"><i class="bi bi-people-fill"></i> Participants</a>
+                                <a href="{{url_for('update_trek',trek_id=t.Trek_Id)}}" class="btn btn-success md-4"><i class="bi bi-pencil"></i> Update</a>
+                                <a href="{{url_for('participants',trek_id=t.Trek_Id)}}" class="btn btn-secondary md-4"><i class="bi bi-people-fill"></i> Participants</a>
                             </div>
 
                         </td>
@@ -77,7 +77,7 @@
                     {%else%}
                 <tr>
                     <td colspan="6">
-                        <p div class="text-center">No Participants Registered</p>
+                        <p div class="text-center">No Treks Assigned</p>
                     </td>
                 </tr>
                     {% endfor  %}

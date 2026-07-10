@@ -63,9 +63,17 @@
                 <button class="btn btn-danger">Closed </button>
                 {%endif%}
             </td>
+            
           
         </tr>
-        {% endfor  %}
+       
+        {%else%}
+                <tr>
+                    <td colspan="6">
+                        <p div class="text-center">No Participants Registered</p>
+                    </td>
+                </tr>
+                 {% endfor  %}
       </tbody>
         </table>
     </div>
