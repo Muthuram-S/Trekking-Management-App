@@ -8,7 +8,10 @@ app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///trekking.db'
 app.config['SECRET_KEY']='mysecretkey'
 db.init_app(app)
 
-from routes import *
+import routes.auth
+import routes.admin
+import routes.staff
+import routes.user
 
 with app.app_context():
     db.create_all()

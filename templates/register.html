@@ -3,7 +3,7 @@
 <h1 class="align-center" style="margin-top: 0;">Register</h1>
 
   <form method="POST">
-    <div class="mb-1">
+    <div class="mb">
     <label class="form-label">Username</label>
   <input class="form-control" name="name" type="text" placeholder="Username" aria-label="default input example" required>
 </div>
@@ -11,7 +11,11 @@
     <label  class="form-label">Email address</label>
   <input type="email" class="form-control"   pattern="[a-zA-Z0-9._%+-]+@gmail\.com" name="mail" id="exampleFormControlInput1" placeholder="name@example.com" required>
 </div>
-<div class="mb-1">
+<div >
+    <label  class="form-label">Contact</label>
+  <input type="number" class="form-control"    name="contact" id="exampleFormControlInput1" placeholder="" required>
+</div>
+<div class="mb">
     <label for="inputPassword5" class="form-label">Password</label>
 <input type="password" id="inputPassword5" name="password" class="form-control" minlength="6" aria-describedby="passwordHelpBlock" required>
 <div id="passwordHelpBlock" class="form-text" style="color: white;">
