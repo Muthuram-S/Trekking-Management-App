@@ -4,14 +4,18 @@ from werkzeug.security import generate_password_hash,check_password_hash
 
 app=Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///trekking.db'
-app.config['SECRET_KEY']='mysecretkey'
-db.init_app(app)
+import sys
+sys.modules['app'] = sys.modules[__name__]
 
 import routes.auth
 import routes.admin
 import routes.staff
 import routes.user
+
+
+app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///trekking.db'
+app.config['SECRET_KEY']='mysecretkey'
+db.init_app(app)
 
 with app.app_context():
     db.create_all()
