@@ -51,9 +51,9 @@
         {% for t in book %}
         <tr>
             <td>{{t.booking_id}}</td>
-            <td>{{ t.User_Id}}</td>
+            <td>{{ t.user.Username}}</td>
             
-            <td>{{t.Trek_Id}}</td>
+            <td>{{t.trek.Trek_Name}}</td>
             
             <td>{{t.Booking_Date.strftime("%d-%m-%y")}}</td>
             
